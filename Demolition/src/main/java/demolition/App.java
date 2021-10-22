@@ -10,6 +10,7 @@ public class App extends PApplet {
     public static final int FPS = 60;
 
     public App() {
+    
     }
 
     public void settings() {
@@ -18,7 +19,7 @@ public class App extends PApplet {
 
     public void setup() {
         frameRate(FPS);
-
+        Map map = new Map(this, "level1.txt");
         // Load images during setup
     }
 

@@ -2,10 +2,13 @@ package demolition;
 
 import processing.core.PApplet;
 
-public class Map extends PApplet {
+public class Map {
 	
-	public Map(String filename) {
-		String[] mapStrings = loadStrings(filename);
+	public Map(PApplet parent, String filename) {
+		String[] mapStrings = parent.loadStrings(filename);
+		for(int i = 0; i < mapStrings.length; i++) {
+			System.out.println(mapStrings[i]);
+		}
 	}
 
 }
