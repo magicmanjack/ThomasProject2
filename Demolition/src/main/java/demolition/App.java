@@ -1,6 +1,7 @@
 package demolition;
 
 import processing.core.PApplet;
+import processing.data.JSONObject;
 
 public class App extends PApplet {
 
@@ -8,7 +9,7 @@ public class App extends PApplet {
     public static final int HEIGHT = 480;
 
     public static final int FPS = 60;
-
+    
     public App() {
     
     }
@@ -19,12 +20,13 @@ public class App extends PApplet {
 
     public void setup() {
         frameRate(FPS);
-        Map map = new Map(this, "level1.txt");
+        Map.loadMaps(this, "config.json");
         // Load images during setup
     }
 
     public void draw() {
-        background(0, 0, 0);
+        background(255, 165, 0);
+        Map.maps[0].draw(this);
     }
 
     public static void main(String[] args) {
