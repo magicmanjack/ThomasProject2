@@ -11,17 +11,31 @@ public class Map {
 	
 	public static Map[] maps;
 	
-	public static HashMap<Character, PImage> tiles = new HashMap<>();
+	public static HashMap<Character, PImage> tiles;
+	
+	public static int currentLevel;
+	public static Player bombGuy;
 	
 	public String[] mapStrings;
 	public int time;
+	public int spawnX, spawnY;
 	
 	public Map(String[] mapStrings, int time) {
 		this.mapStrings = mapStrings;
+		for(int y = 0; y < mapStrings.length; y++) {
+			for(int x = 0; x < mapStrings.length; x++) {
+				if((char)(this.mapStrings[y].charAt(x)) == 'P') {
+					spawnX = x;
+					spawnY = y;
+				}
+			}
+		}
 		this.time = time;
 	}
 	
 	public static void loadMaps(PApplet parent, String configURL) {
+		currentLevel = 0; // Sets the current level to the first level.
+		
 		JSONArray mapObjects = parent.loadJSONObject(configURL).getJSONArray("levels");
 		maps = new Map[mapObjects.size()];
 		for(int i = 0; i < mapObjects.size(); i++) {
@@ -29,7 +43,9 @@ public class Map {
 			maps[i] = new Map(parent.loadStrings(mapObject.getString("path")), mapObject.getInt("time"));
 		}
 		
+		bombGuy = new Player(parent, maps[currentLevel].spawnX, maps[currentLevel].spawnY); // Creates the player and sets its position to the first maps spawn.
 		//Loading images
+		tiles = new HashMap<>();
 		tiles.put('W', parent.loadImage("src/main/resources/wall/solid.png"));
 		tiles.put('B', parent.loadImage("src/main/resources/broken/broken.png"));
 		tiles.put(' ', parent.loadImage("src/main/resources/empty/empty.png"));
