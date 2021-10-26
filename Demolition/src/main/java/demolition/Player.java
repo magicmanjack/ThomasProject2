@@ -2,17 +2,13 @@ package demolition;
 
 import processing.core.*;
 
-public class Player {
-	
-	public static final int SPRITE_OFFSET_Y = -16;
-	
-	public int x, y, xDir, yDir;
-	public int animationStart, animationOffset, deltaFrames;
-	public PImage[] sprites;
+public class Player extends Entity {
 	
 	public Player(PApplet parent, int spawnX, int spawnY) {
 		x = spawnX;
 		y = spawnY;
+		xDir = 0;
+		yDir = 0;
 		animationStart = 12;
 		animationOffset = 0;
 		sprites = new PImage[16];
@@ -35,22 +31,10 @@ public class Player {
 		
 	}
 	
-	public void animate() {
-		animationOffset++;
-		if(animationOffset > 3) {
-			animationOffset = 0;
-		}
-	}
-	
+	@Override
 	public void update() {
-		deltaFrames++;
-		if(deltaFrames >= 12) {
-			deltaFrames = 0;
-			// The animation frame changes every 0.2 seconds.
-			animate();
-		}
-		if((char)Map.maps[Map.currentLevel].mapStrings[y + yDir].charAt(x + xDir) == 'W' 
-				|| (char)Map.maps[Map.currentLevel].mapStrings[y + yDir].charAt(x + xDir) == 'B') {
+		animate();
+		if(collides()) {
 			xDir = 0;
 			yDir = 0;
 		}
@@ -58,10 +42,6 @@ public class Player {
 		y += yDir;
 		xDir = 0;
 		yDir = 0;
-	}
-	
-	public void draw(PApplet parent) {
-		parent.image(sprites[animationStart + animationOffset], x * Map.TILE_WIDTH, y * Map.TILE_WIDTH + Player.SPRITE_OFFSET_Y + Map.Y_OFFSET);
 	}
 
 }

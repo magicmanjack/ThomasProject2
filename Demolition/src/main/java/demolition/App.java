@@ -54,6 +54,10 @@ public class App extends PApplet {
     
     public void update() {
     	Map.bombGuy.update();
+    	//Enemies
+    	for(int i = 0; i < Map.enemies.length; i++) {
+    		Map.enemies[i].update();
+    	}
     }
 
     public void draw() {
@@ -61,6 +65,10 @@ public class App extends PApplet {
         background(239, 129, 0);
         Map.maps[Map.currentLevel].draw(this);
         Map.bombGuy.draw(this);
+        //Enemies
+        for(int i = 0; i < Map.enemies.length; i++) {
+    		Map.enemies[i].draw(this);
+    	}
     }
 
     public static void main(String[] args) {

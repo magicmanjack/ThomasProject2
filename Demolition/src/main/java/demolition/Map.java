@@ -10,6 +10,7 @@ public class Map {
 	public static final int Y_OFFSET = 64, TILE_WIDTH = 32;
 	
 	public static Map[] maps;
+	public static Entity[] enemies = new Entity[0];
 	
 	public static HashMap<Character, PImage> tiles;
 	
@@ -20,7 +21,7 @@ public class Map {
 	public int time;
 	public int spawnX, spawnY;
 	
-	public Map(String[] mapStrings, int time) {
+	public Map(PApplet parent, String[] mapStrings, int time) {
 		this.mapStrings = mapStrings;
 		for(int y = 0; y < mapStrings.length; y++) {
 			for(int x = 0; x < mapStrings.length; x++) {
@@ -28,9 +29,22 @@ public class Map {
 					spawnX = x;
 					spawnY = y;
 				}
+				if((char)(this.mapStrings[y].charAt(x)) == 'R') {
+					addEnemy(new RedEnemy(parent, x, y));
+				}
+				if((char)(this.mapStrings[y].charAt(x)) == 'Y') {
+					addEnemy(new YellowEnemy(parent, x, y));
+				}
 			}
 		}
 		this.time = time;
+	}
+	
+	public static void addEnemy(Entity e) {
+		Entity[] tempArray = new Entity[enemies.length + 1];
+		System.arraycopy(enemies, 0, tempArray, 0, enemies.length);
+		enemies = tempArray;
+		enemies[enemies.length - 1] = e;
 	}
 	
 	public static void loadMaps(PApplet parent, String configURL) {
@@ -40,7 +54,7 @@ public class Map {
 		maps = new Map[mapObjects.size()];
 		for(int i = 0; i < mapObjects.size(); i++) {
 			JSONObject mapObject = mapObjects.getJSONObject(i);
-			maps[i] = new Map(parent.loadStrings(mapObject.getString("path")), mapObject.getInt("time"));
+			maps[i] = new Map(parent, parent.loadStrings(mapObject.getString("path")), mapObject.getInt("time"));
 		}
 		
 		bombGuy = new Player(parent, maps[currentLevel].spawnX, maps[currentLevel].spawnY); // Creates the player and sets its position to the first maps spawn.
