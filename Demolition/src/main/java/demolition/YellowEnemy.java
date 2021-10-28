@@ -36,27 +36,27 @@ public class YellowEnemy extends Entity {
 		if(deltaFrames % 60 == 0) {
 			if(collides()) {	
 				while(collides()) {
-					int[][] rot = {{0, -1},{1, 0}};
-					int[] vec = {xDir, yDir};
-					int[] vecOut = {0, 0};
-					for(int row = 0; row < rot.length; row++) {
-						vecOut[row] = vec[0] * rot[row][0] + vec[1] * rot[row][1];
+					if(xDir == -1 && yDir == 0) {
+						xDir = 0;
+						yDir = -1;
+						animationStart = 8;
+					} else if(xDir == 1 && yDir == 0) {
+						xDir = 0;
+						yDir = 1;
+						animationStart = 12;
+					} else if(xDir == 0 && yDir == -1) {
+						xDir = 1;
+						yDir = 0;
+						animationStart = 4;
+					} else if(xDir == 0 && yDir == 1) {
+						xDir = -1;
+						yDir = 0;
+						animationStart = 0;
 					}
-					xDir = vecOut[0];
-					yDir = vecOut[1];
 				}
 			}
 			x += xDir;
 			y += yDir;
-			if(xDir == -1 && yDir == 0) {
-				animationStart = 0;
-			} else if(xDir == 1 && yDir == 0) {
-				animationStart = 4;
-			} else if(xDir == 0 && yDir == -1) {
-				animationStart = 8;
-			} else if(xDir == 0 && yDir == 1) {
-				animationStart = 12;
-			}
 		}
 	}
 }
