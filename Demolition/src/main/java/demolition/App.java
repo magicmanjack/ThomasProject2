@@ -11,6 +11,8 @@ public class App extends PApplet {
 
     public static final int FPS = 60;
     
+    public static boolean keyHeld;
+    
     public App() {
     
     }
@@ -26,44 +28,51 @@ public class App extends PApplet {
     }
     
     public void keyPressed() {
-    	if(key == CODED) {
-			switch(keyCode) {
-			case PConstants.LEFT:
-				Map.bombGuy.animationStart = 0;
-				Map.bombGuy.xDir = -1;
-				Map.bombGuy.yDir = 0;
-				break;
-			case PConstants.RIGHT:
-				Map.bombGuy.animationStart = 4;
-				Map.bombGuy.xDir = 1;
-				Map.bombGuy.yDir = 0;
-				break;
-			case PConstants.UP:
-				Map.bombGuy.animationStart = 8;
-				Map.bombGuy.xDir = 0;
-				Map.bombGuy.yDir = -1;
-				break;
-			case PConstants.DOWN:
-				Map.bombGuy.animationStart = 12;
-				Map.bombGuy.xDir = 0;
-				Map.bombGuy.yDir = 1;
-				break;
+    	if(!keyHeld) {
+    		keyHeld = true;
+	    	if(key == CODED) {
+				switch(keyCode) {
+				case PConstants.LEFT:
+					Map.bombGuy.animationStart = 0;
+					Map.bombGuy.xDir = -1;
+					Map.bombGuy.yDir = 0;
+					break;
+				case PConstants.RIGHT:
+					Map.bombGuy.animationStart = 4;
+					Map.bombGuy.xDir = 1;
+					Map.bombGuy.yDir = 0;
+					break;
+				case PConstants.UP:
+					Map.bombGuy.animationStart = 8;
+					Map.bombGuy.xDir = 0;
+					Map.bombGuy.yDir = -1;
+					break;
+				case PConstants.DOWN:
+					Map.bombGuy.animationStart = 12;
+					Map.bombGuy.xDir = 0;
+					Map.bombGuy.yDir = 1;
+					break;
+				}
+			} else {
+				if(key == ' ') {
+					Bomb.bombs.add(new Bomb(this, Map.bombGuy.x, Map.bombGuy.y));
+				}
 			}
-		} else {
-			if(key == ' ') {
-				Bomb.bombs.add(new Bomb(this, Map.bombGuy.x, Map.bombGuy.y));
-			}
-		}
+    	}
+    }
+    
+    public void keyReleased() {
+    	keyHeld = false;
     }
     
     public void update() {
-    	Map.bombGuy.update();
+    	Map.bombGuy.update(this);
     	//Enemies
-    	for(int i = 0; i < Map.enemies.length; i++) {
-    		Map.enemies[i].update();
+    	for(int i = 0; i < Map.enemies.size(); i++) {
+    		Map.enemies.get(i).update(this);
     	}
     	for(int i = 0; i < Bomb.bombs.size(); i++) {
-    		Bomb.bombs.get(i).update();
+    		Bomb.bombs.get(i).update(this);
     	}
     }
 
@@ -78,8 +87,8 @@ public class App extends PApplet {
         //Player
         Map.bombGuy.draw(this);
         //Enemies
-        for(int i = 0; i < Map.enemies.length; i++) {
-    		Map.enemies[i].draw(this);
+        for(int i = 0; i < Map.enemies.size(); i++) {
+    		Map.enemies.get(i).draw(this);
     	}
     }
 

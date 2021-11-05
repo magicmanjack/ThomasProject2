@@ -4,7 +4,11 @@ import processing.core.*;
 
 public class Player extends Entity {
 	
+	public int life;
+	public boolean dead;
+	
 	public Player(PApplet parent, int spawnX, int spawnY) {
+		life = 3;
 		x = spawnX;
 		y = spawnY;
 		xDir = 0;
@@ -32,7 +36,7 @@ public class Player extends Entity {
 	}
 	
 	@Override
-	public void update() {
+	public void update(PApplet parent) {
 		animate();
 		if(collides()) {
 			xDir = 0;
@@ -42,6 +46,11 @@ public class Player extends Entity {
 		y += yDir;
 		xDir = 0;
 		yDir = 0;
+		if(Map.maps[Map.currentLevel].mapStrings[y].charAt(x) == 'G') {
+			// Touching the goal.
+			Map.currentLevel++;
+			Map.reloadMap(parent, Map.configURL);
+		}
 	}
 
 }

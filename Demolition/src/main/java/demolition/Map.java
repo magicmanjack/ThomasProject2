@@ -1,6 +1,6 @@
 package demolition;
 
-import java.util.HashMap;
+import java.util.*;
 
 import processing.core.*;
 import processing.data.*;
@@ -10,7 +10,8 @@ public class Map {
 	public static final int Y_OFFSET = 64, TILE_WIDTH = 32;
 	
 	public static Map[] maps;
-	public static Entity[] enemies = new Entity[0];
+	public static String configURL;
+	public static ArrayList<Entity> enemies = new ArrayList<Entity>();
 	
 	public static HashMap<Character, PImage> tiles;
 	
@@ -30,26 +31,19 @@ public class Map {
 					spawnY = y;
 				}
 				if((char)(this.mapStrings[y].charAt(x)) == 'R') {
-					addEnemy(new RedEnemy(parent, x, y));
+					enemies.add(new RedEnemy(parent, x, y));
 				}
 				if((char)(this.mapStrings[y].charAt(x)) == 'Y') {
-					addEnemy(new YellowEnemy(parent, x, y));
+					enemies.add(new YellowEnemy(parent, x, y));
 				}
 			}
 		}
 		this.time = time;
 	}
-	
-	public static void addEnemy(Entity e) {
-		Entity[] tempArray = new Entity[enemies.length + 1];
-		System.arraycopy(enemies, 0, tempArray, 0, enemies.length);
-		enemies = tempArray;
-		enemies[enemies.length - 1] = e;
-	}
-	
-	public static void loadMaps(PApplet parent, String configURL) {
+
+	public static void loadMaps(PApplet parent, String cURL) {
 		currentLevel = 0; // Sets the current level to the first level.
-		
+		configURL = cURL;
 		JSONArray mapObjects = parent.loadJSONObject(configURL).getJSONArray("levels");
 		maps = new Map[mapObjects.size()];
 		for(int i = 0; i < mapObjects.size(); i++) {
@@ -58,6 +52,8 @@ public class Map {
 		}
 		
 		bombGuy = new Player(parent, maps[currentLevel].spawnX, maps[currentLevel].spawnY); // Creates the player and sets its position to the first maps spawn.
+		bombGuy.life = parent.loadJSONObject(configURL).getInt("lives");
+		
 		//Loading images
 		tiles = new HashMap<>();
 		tiles.put('W', parent.loadImage("src/main/resources/wall/solid.png"));
@@ -67,6 +63,22 @@ public class Map {
 		tiles.put('P', parent.loadImage("src/main/resources/empty/empty.png"));
 		tiles.put('Y', parent.loadImage("src/main/resources/empty/empty.png"));
 		tiles.put('R', parent.loadImage("src/main/resources/empty/empty.png"));
+	}
+	
+	public static void reloadMap(PApplet parent, String configURL) {
+		System.out.println(bombGuy.life);
+		//Clearing the enemies array list.
+		enemies.clear();
+		//Clearing the bombs array list.
+		Bomb.bombs.clear();
+		// The level is completely reloaded.
+		JSONArray mapObjects = parent.loadJSONObject(configURL).getJSONArray("levels");
+		JSONObject mapObject = mapObjects.getJSONObject(currentLevel);
+		maps[currentLevel] = new Map(parent, parent.loadStrings(mapObject.getString("path")), mapObject.getInt("time"));
+		// Respawns Bomb guy.
+		bombGuy.animationStart = 12;
+		bombGuy.x = maps[currentLevel].spawnX;
+		bombGuy.y = maps[currentLevel].spawnY;
 	}
 	
 	public void draw(PApplet parent) {

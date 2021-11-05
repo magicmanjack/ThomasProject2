@@ -31,7 +31,7 @@ public class YellowEnemy extends Entity {
 	}
 	
 	@Override
-	public void update() {
+	public void update(PApplet parent) {
 		animate();
 		if(deltaFrames % 60 == 0) {
 			if(collides()) {	
@@ -57,6 +57,11 @@ public class YellowEnemy extends Entity {
 			}
 			x += xDir;
 			y += yDir;
+		}
+		// Player collision
+		if(x == Map.bombGuy.x && y == Map.bombGuy.y) {
+			Map.bombGuy.life--;
+			Map.reloadMap(parent, Map.configURL);
 		}
 	}
 }

@@ -50,64 +50,94 @@ public class Bomb {
 		Map.maps[Map.currentLevel].mapStrings[y] = String.valueOf(rowChars);
 	}
 	
-	public void collide() {
+	public void collide(PApplet parent) {
 		
-		for(int i = -2; i <= 2; i++) {
-			//Horizontal collision
-			if(i < 0 && x + i >= 0) {
-				if(Map.maps[Map.currentLevel].mapStrings[y].charAt(x + i) == 'W') {
-					//If a solid wall.
-					explosionStartX = i + 1;
-				} else if(Map.maps[Map.currentLevel].mapStrings[y].charAt(x + i) == 'B') {
-					//If a broken wall.
-					explosionStartX = i;
-					swapMapChar(x + i, y, ' ');
+		if(deltaFrames >= 120 && deltaFrames <= 150) {
+			for(int i = -2; i <= 2; i++) {
+				//Horizontal collision
+				if(deltaFrames == 120) {
+					if(i < 0 && x + i >= 0) {
+						if(Map.maps[Map.currentLevel].mapStrings[y].charAt(x + i) == 'W') {
+							//If a solid wall.
+							explosionStartX = i + 1;
+						} else if(Map.maps[Map.currentLevel].mapStrings[y].charAt(x + i) == 'B') {
+							//If a broken wall.
+							explosionStartX = i;
+							swapMapChar(x + i, y, ' ');
+						}
+					} else if(i > 0 && x + i < Map.maps[Map.currentLevel].mapStrings[0].length()) {
+						if(Map.maps[Map.currentLevel].mapStrings[y].charAt(x + i) == 'W') {
+							//If a solid wall.
+							explosionEndX = i - 1;
+							break;
+						} else if(Map.maps[Map.currentLevel].mapStrings[y].charAt(x + i) == 'B') {
+							//If a broken wall.
+							explosionEndX = i;
+							swapMapChar(x + i, y, ' ');
+							break;
+						} 
+					}
 				}
-			} else if(i > 0 && x + i < Map.maps[Map.currentLevel].mapStrings[0].length()) {
-				if(Map.maps[Map.currentLevel].mapStrings[y].charAt(x + i) == 'W') {
-					//If a solid wall.
-					explosionEndX = i - 1;
-					break;
-				} else if(Map.maps[Map.currentLevel].mapStrings[y].charAt(x + i) == 'B') {
-					//If a broken wall.
-					explosionEndX = i;
-					swapMapChar(x + i, y, ' ');
-					break;
-				} 
+				// Collision with enemies.
+				for(int j = 0; j < Map.enemies.size(); j++) {
+					Entity e = Map.enemies.get(j);
+					if(x + i == e.x && y == e.y) {
+						Map.enemies.remove(j);
+					}
+				}
+				// Collision with player.
+				if(x + i == Map.bombGuy.x && y == Map.bombGuy.y) {
+					Map.bombGuy.life--;
+					Map.reloadMap(parent, Map.configURL);
+					return;
+				}
 			}
-		}
-		
-		for(int i = -2; i <= 2; i++) {
-			//Vertical collision
-			if(i < 0 && y + i >= 0) {
-				if(Map.maps[Map.currentLevel].mapStrings[y + i].charAt(x) == 'W') {
-					//If a solid wall.
-					explosionStartY = i + 1;
-				} else if(Map.maps[Map.currentLevel].mapStrings[y + i].charAt(x) == 'B') {
-					//If a broken wall.
-					explosionStartY = i;
-					swapMapChar(x, y + i, ' ');
+			
+			for(int i = -2; i <= 2; i++) {
+				//Vertical collision
+				if(deltaFrames == 120) {
+					if(i < 0 && y + i >= 0) {
+						if(Map.maps[Map.currentLevel].mapStrings[y + i].charAt(x) == 'W') {
+							//If a solid wall.
+							explosionStartY = i + 1;
+						} else if(Map.maps[Map.currentLevel].mapStrings[y + i].charAt(x) == 'B') {
+							//If a broken wall.
+							explosionStartY = i;
+							swapMapChar(x, y + i, ' ');
+						}
+					} else if(i > 0 && y + i < Map.maps[Map.currentLevel].mapStrings.length) {
+						if(Map.maps[Map.currentLevel].mapStrings[y + i].charAt(x) == 'W') {
+							//If a solid wall.
+							explosionEndY = i - 1;
+							break;
+						}else if(Map.maps[Map.currentLevel].mapStrings[y + i].charAt(x) == 'B') {
+							//If a broken wall.
+							explosionEndY = i;
+							swapMapChar(x, y + i, ' ');
+							break;
+						}
+					}
 				}
-			} else if(i > 0 && y + i < Map.maps[Map.currentLevel].mapStrings.length) {
-				if(Map.maps[Map.currentLevel].mapStrings[y + i].charAt(x) == 'W') {
-					//If a solid wall.
-					explosionEndY = i - 1;
-					break;
-				}else if(Map.maps[Map.currentLevel].mapStrings[y + i].charAt(x) == 'B') {
-					//If a broken wall.
-					explosionEndY = i;
-					swapMapChar(x, y + i, ' ');
-					break;
+				// Collision with enemies.
+				for(int j = 0; j < Map.enemies.size(); j++) {
+					Entity e = Map.enemies.get(j);
+					if(x == e.x && y + i == e.y) {
+						Map.enemies.remove(j);
+					}
+				}
+				// Collision with player.
+				if(x == Map.bombGuy.x && y + i == Map.bombGuy.y) {
+					Map.bombGuy.life--;
+					Map.reloadMap(parent, Map.configURL);
+					return;
 				}
 			}
 		}
 	}
 	
-	public void update() {
+	public void update(PApplet parent) {
 		animate();
-		if(deltaFrames == 120) {
-			collide();
-		}
+		collide(parent);
 	}
 	
 	public void draw(PApplet parent) {

@@ -26,7 +26,7 @@ public class Entity {
 				|| (char)Map.maps[Map.currentLevel].mapStrings[y + yDir].charAt(x + xDir) == 'B');
 	}
 	
-	public void update() {
+	public void update(PApplet parent) {
 		
 	}
 	
