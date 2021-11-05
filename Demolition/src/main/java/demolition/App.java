@@ -49,6 +49,10 @@ public class App extends PApplet {
 				Map.bombGuy.yDir = 1;
 				break;
 			}
+		} else {
+			if(key == ' ') {
+				Bomb.bombs.add(new Bomb(this, Map.bombGuy.x, Map.bombGuy.y));
+			}
 		}
     }
     
@@ -58,12 +62,20 @@ public class App extends PApplet {
     	for(int i = 0; i < Map.enemies.length; i++) {
     		Map.enemies[i].update();
     	}
+    	for(int i = 0; i < Bomb.bombs.size(); i++) {
+    		Bomb.bombs.get(i).update();
+    	}
     }
 
     public void draw() {
     	update();
         background(239, 129, 0);
         Map.maps[Map.currentLevel].draw(this);
+        //Bombs
+        for(int i = 0; i < Bomb.bombs.size(); i++) {
+    		Bomb.bombs.get(i).draw(this);
+    	}
+        //Player
         Map.bombGuy.draw(this);
         //Enemies
         for(int i = 0; i < Map.enemies.length; i++) {
