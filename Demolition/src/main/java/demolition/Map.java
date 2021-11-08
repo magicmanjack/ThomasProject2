@@ -66,7 +66,6 @@ public class Map {
 	}
 	
 	public static void reloadMap(PApplet parent, String configURL) {
-		System.out.println(bombGuy.life);
 		//Clearing the enemies array list.
 		enemies.clear();
 		//Clearing the bombs array list.
