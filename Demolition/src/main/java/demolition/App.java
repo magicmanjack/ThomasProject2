@@ -1,7 +1,6 @@
 package demolition;
 
-import processing.core.PApplet;
-import processing.core.PConstants;
+import processing.core.*;
 import processing.data.JSONObject;
 
 public class App extends PApplet {
@@ -13,6 +12,13 @@ public class App extends PApplet {
     
     public static boolean keyHeld;
     
+    public PFont gameFont;
+    
+    public PImage playerIcon;
+    public PImage clockIcon;
+    
+    public long deltaFrames;
+    
     public App() {
     
     }
@@ -23,6 +29,9 @@ public class App extends PApplet {
 
     public void setup() {
         frameRate(FPS);
+        gameFont = createFont("src/main/resources/PressStart2P-Regular.ttf", 16);
+        playerIcon = loadImage("src/main/resources/icons/player.png");
+        clockIcon = loadImage("src/main/resources/icons/clock.png");
         Map.loadMaps(this, "config.json");
         // Load images during setup
     }
@@ -66,30 +75,59 @@ public class App extends PApplet {
     }
     
     public void update() {
-    	Map.bombGuy.update(this);
-    	//Enemies
-    	for(int i = 0; i < Map.enemies.size(); i++) {
-    		Map.enemies.get(i).update(this);
-    	}
-    	for(int i = 0; i < Bomb.bombs.size(); i++) {
-    		Bomb.bombs.get(i).update(this);
+    	deltaFrames++;
+    	if(Map.bombGuy.life > 0 && Map.currentLevel < Map.maps.length) {
+    		if(deltaFrames % 60 == 0) {
+    			Map.maps[Map.currentLevel].time--;
+    		}
+	    	Map.bombGuy.update(this);
+	    	//Enemies
+	    	for(int i = 0; i < Map.enemies.size(); i++) {
+	    		Map.enemies.get(i).update(this);
+	    	}
+	    	for(int i = 0; i < Bomb.bombs.size(); i++) {
+	    		Bomb.bombs.get(i).update(this);
+	    	}
     	}
     }
 
     public void draw() {
     	update();
         background(239, 129, 0);
-        Map.maps[Map.currentLevel].draw(this);
-        //Bombs
-        for(int i = 0; i < Bomb.bombs.size(); i++) {
-    		Bomb.bombs.get(i).draw(this);
-    	}
-        //Player
-        Map.bombGuy.draw(this);
-        //Enemies
-        for(int i = 0; i < Map.enemies.size(); i++) {
-    		Map.enemies.get(i).draw(this);
-    	}
+        if(Map.bombGuy.life > 0 && Map.currentLevel < Map.maps.length && Map.maps[Map.currentLevel].time >= 0) {
+        	// UI
+        	image(playerIcon, 128, 16, 32, 32);
+        	fill(color(0, 0, 0));
+        	textFont(gameFont);
+        	textAlign(LEFT, TOP);
+        	text(Map.bombGuy.life, 168, 26);
+        	image(clockIcon, 256, 16, 32, 32);
+        	text(Map.maps[Map.currentLevel].time, 296, 26);
+        	// Map
+	        Map.maps[Map.currentLevel].draw(this);
+	        //Bombs
+	        for(int i = 0; i < Bomb.bombs.size(); i++) {
+	    		Bomb.bombs.get(i).draw(this);
+	    	}
+	        //Player
+	        Map.bombGuy.draw(this);
+	        //Enemies
+	        for(int i = 0; i < Map.enemies.size(); i++) {
+	    		Map.enemies.get(i).draw(this);
+	    	}
+        } else if(Map.currentLevel >= Map.maps.length) {
+        	//text time
+        	fill(color(0, 0, 0));
+        	textFont(gameFont);
+        	textAlign(CENTER);
+        	text("YOU WIN", 240, 200);
+        } else if(Map.bombGuy.life <= 0 || Map.maps[Map.currentLevel].time < 0) {
+        	//text time
+        	fill(color(0, 0, 0));
+        	textFont(gameFont);
+        	textAlign(CENTER);
+        	text("GAME OVER", 240, 200);
+        }
     }
 
     public static void main(String[] args) {

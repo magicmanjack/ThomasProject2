@@ -72,13 +72,16 @@ public class Map {
 		//Clearing the bombs array list.
 		Bomb.bombs.clear();
 		// The level is completely reloaded.
-		JSONArray mapObjects = parent.loadJSONObject(configURL).getJSONArray("levels");
-		JSONObject mapObject = mapObjects.getJSONObject(currentLevel);
-		maps[currentLevel] = new Map(parent, parent.loadStrings(mapObject.getString("path")), mapObject.getInt("time"));
-		// Respawns Bomb guy.
-		bombGuy.animationStart = 12;
-		bombGuy.x = maps[currentLevel].spawnX;
-		bombGuy.y = maps[currentLevel].spawnY;
+		if(Map.currentLevel < Map.maps.length) {
+			int oldTime = Map.maps[Map.currentLevel].time;
+			JSONArray mapObjects = parent.loadJSONObject(configURL).getJSONArray("levels");
+			JSONObject mapObject = mapObjects.getJSONObject(currentLevel);
+			maps[currentLevel] = new Map(parent, parent.loadStrings(mapObject.getString("path")), oldTime);
+			// Respawns Bomb guy.
+			bombGuy.animationStart = 12;
+			bombGuy.x = maps[currentLevel].spawnX;
+			bombGuy.y = maps[currentLevel].spawnY;
+		}
 	}
 	
 	public void draw(PApplet parent) {
