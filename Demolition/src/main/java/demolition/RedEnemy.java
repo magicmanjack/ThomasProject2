@@ -5,7 +5,7 @@ import java.util.Random;
 import processing.core.PApplet;
 import processing.core.PImage;
 
-public class RedEnemy extends Entity {
+public class RedEnemy extends Enemy {
 	
 	public RedEnemy(PApplet parent, int spawnX, int spawnY) {
 		x = spawnX;

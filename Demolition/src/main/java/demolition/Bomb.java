@@ -4,10 +4,9 @@ import java.util.ArrayList;
 
 import processing.core.*;
 
-public class Bomb {
+public class Bomb extends Entity {
 	
 	public static ArrayList<Bomb> bombs = new ArrayList<Bomb>();	
-	public int x, y;
 	public int explosionStartX, explosionEndX, explosionStartY, explosionEndY;
 	public PImage[] sprites;
 	public PImage[] explosionSprites;
@@ -80,7 +79,7 @@ public class Bomb {
 				}
 				// Collision with enemies.
 				for(int j = 0; j < Map.enemies.size(); j++) {
-					Entity e = Map.enemies.get(j);
+					Enemy e = Map.enemies.get(j);
 					if(x + i == e.x && y == e.y) {
 						Map.enemies.remove(j);
 					}
@@ -120,7 +119,7 @@ public class Bomb {
 				}
 				// Collision with enemies.
 				for(int j = 0; j < Map.enemies.size(); j++) {
-					Entity e = Map.enemies.get(j);
+					Enemy e = Map.enemies.get(j);
 					if(x == e.x && y + i == e.y) {
 						Map.enemies.remove(j);
 					}
@@ -135,11 +134,13 @@ public class Bomb {
 		}
 	}
 	
+	@Override
 	public void update(PApplet parent) {
 		animate();
 		collide(parent);
 	}
 	
+	@Override
 	public void draw(PApplet parent) {
 		if(animationOffset < 8) {
 			parent.image(sprites[animationOffset], x * Map.TILE_WIDTH, y * Map.TILE_WIDTH + Map.Y_OFFSET);

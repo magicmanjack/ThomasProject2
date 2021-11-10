@@ -11,7 +11,7 @@ public class Map {
 	
 	public static Map[] maps;
 	public static String configURL;
-	public static ArrayList<Entity> enemies = new ArrayList<Entity>();
+	public static ArrayList<Enemy> enemies = new ArrayList<Enemy>();
 	
 	public static HashMap<Character, PImage> tiles;
 	

@@ -1,36 +1,11 @@
 package demolition;
 
-import processing.core.PApplet;
-import processing.core.PImage;
+import processing.core.*;
 
-public class Entity {
-	public static final int SPRITE_OFFSET_Y = -16;
+public abstract class Entity {
+	public int x, y;
 	
-	public int x, y, xDir, yDir;
-	public int animationStart, animationOffset, deltaFrames;
-	public PImage[] sprites;
+	public abstract void update(PApplet parent);
 	
-	public void animate() {
-		deltaFrames++;
-		if(deltaFrames % 12 == 0) {
-			// The animation frame changes every 0.2 seconds.
-			animationOffset++;
-			if(animationOffset > 3) {
-				animationOffset = 0;
-			}
-		}
-	}
-	
-	public boolean collides() {
-		return ((char)Map.maps[Map.currentLevel].mapStrings[y + yDir].charAt(x + xDir) == 'W' 
-				|| (char)Map.maps[Map.currentLevel].mapStrings[y + yDir].charAt(x + xDir) == 'B');
-	}
-	
-	public void update(PApplet parent) {
-		
-	}
-	
-	public void draw(PApplet parent) {
-		parent.image(sprites[animationStart + animationOffset], x * Map.TILE_WIDTH, y * Map.TILE_WIDTH + Player.SPRITE_OFFSET_Y + Map.Y_OFFSET);
-	}
+	public abstract void draw(PApplet parent);
 }

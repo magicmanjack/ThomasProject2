@@ -3,7 +3,7 @@ package demolition;
 import processing.core.PApplet;
 import processing.core.PImage;
 
-public class YellowEnemy extends Entity {
+public class YellowEnemy extends Enemy {
 	public YellowEnemy(PApplet parent, int spawnX, int spawnY) {
 		x = spawnX;
 		y = spawnY;

@@ -2,7 +2,7 @@ package demolition;
 
 import processing.core.*;
 
-public class Player extends Entity {
+public class Player extends Enemy {
 	
 	public int life;
 	public boolean dead;
