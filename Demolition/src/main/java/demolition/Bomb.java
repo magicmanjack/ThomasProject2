@@ -73,7 +73,7 @@ public class Bomb extends Entity {
 	public void collide(PApplet parent) {
 		if(deltaFrames >= 120 && deltaFrames <= 150) { //If two seconds have passed and still within the time line of the explosion animation.
 			for(int i = -2; i <= 2; i++) { 
-				//For every possible horizontal position of the explosion decide where the explosion starts and ends. Collision with entities are dealt with.
+				// For every possible horizontal position of the explosion decide where the explosion starts and ends. Collision with entities are dealt with.
 				if(deltaFrames == 120) { // Ensures the explosion collision only happens once at the start of the explosion.
 					if(i < 0 && x + i >= 0) {
 						if(Map.maps[Map.currentLevel].mapStrings[y].charAt(x + i) == 'W') { //If a solid wall.
@@ -109,7 +109,7 @@ public class Bomb extends Entity {
 			}
 			
 			for(int i = -2; i <= 2; i++) {
-				//For every possible vertical position in the explosion, collision with entities are dealt with.
+				// For every possible vertical position in the explosion, collision with entities are dealt with.
 				if(deltaFrames == 120) {
 					if(i < 0 && y + i >= 0) {
 						if(Map.maps[Map.currentLevel].mapStrings[y + i].charAt(x) == 'W') { //If a solid wall.
@@ -156,18 +156,18 @@ public class Bomb extends Entity {
 	/**Draws the bomb.*/
 	@Override
 	public void draw(PApplet parent) {
-		if(animationOffset < 8) { //If the animation is in the first stage.
+		if(animationOffset < 8) { // If the animation is in the first stage.
 			parent.image(sprites[animationOffset], x * Map.TILE_WIDTH, y * Map.TILE_WIDTH + Map.Y_OFFSET);
-		} else if(deltaFrames < 150) { //If the animation is in the explosion stage.
-			//Centre sprite.
+		} else if(deltaFrames < 150) { // If the animation is in the explosion stage.
+			// Centre sprite.
 			parent.image(explosionSprites[0], x * Map.TILE_WIDTH, y * Map.TILE_WIDTH + Map.Y_OFFSET);
-			//Drawing of the explosion row
+			// Drawing of the explosion row
 			for(int i = explosionStartX; i <= explosionEndX; i++) {
 				if(i != 0) {
 					parent.image(explosionSprites[1], (x + i) * Map.TILE_WIDTH, y * Map.TILE_WIDTH + Map.Y_OFFSET);
 				}
 			}
-			//Drawing of the explosion column
+			// Drawing of the explosion column
 			for(int i = explosionStartY; i <= explosionEndY; i++) {
 				if(i != 0) {
 					parent.image(explosionSprites[2], x * Map.TILE_WIDTH, (y + i) * Map.TILE_WIDTH + Map.Y_OFFSET);
