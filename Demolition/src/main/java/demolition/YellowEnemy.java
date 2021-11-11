@@ -2,16 +2,20 @@ package demolition;
 
 import processing.core.PApplet;
 import processing.core.PImage;
-
+/**The yellow enemy class.
+ * Impliments yellow enemy ai
+ * Will always move to the clockwise
+ * Direction from the previous direction.
+ * */
 public class YellowEnemy extends Enemy {
 	public YellowEnemy(PApplet parent, int spawnX, int spawnY) {
-		x = spawnX;
+		x = spawnX;//Spawning coordinate
 		y = spawnY;
 		xDir = -1;
 		yDir = 0;
 		animationStart = 0;
 		animationOffset = 0;
-		sprites = new PImage[16];
+		//Loading sprite pictures in to the game.
 		sprites[0] = parent.loadImage("src/main/resources/yellow_enemy/yellow_left1.png"); 
 		sprites[1] = parent.loadImage("src/main/resources/yellow_enemy/yellow_left2.png");
 		sprites[2] = parent.loadImage("src/main/resources/yellow_enemy/yellow_left3.png");
@@ -34,24 +38,24 @@ public class YellowEnemy extends Enemy {
 	public void update(PApplet parent) {
 		animate();
 		if(deltaFrames % 60 == 0) {
-			if(collides()) {	
-				while(collides()) {
-					if(xDir == -1 && yDir == 0) {
+			if(collides()) {
+				while(collides()) {//If the yellow enemy collides with a wall.
+					if(xDir == -1 && yDir == 0) {//If the yellow enemy is coming from left direction.
 						xDir = 0;
-						yDir = -1;
-						animationStart = 8;
-					} else if(xDir == 1 && yDir == 0) {
+						yDir = -1;//The yellow enemy will move upward.
+						animationStart = 8;//Set the starting frame to up animation start.
+					} else if(xDir == 1 && yDir == 0) {//If the yellow enemy is coming from right direction.
 						xDir = 0;
-						yDir = 1;
-						animationStart = 12;
-					} else if(xDir == 0 && yDir == -1) {
-						xDir = 1;
+						yDir = 1;//The yellow enemy will move downward.
+						animationStart = 12;//Set the starting frame to down animation start.
+					} else if(xDir == 0 && yDir == -1) {//If the yellow enemy is coming from up direction.
+						xDir = 1;//The yellow enemy will move rightward.
 						yDir = 0;
-						animationStart = 4;
-					} else if(xDir == 0 && yDir == 1) {
-						xDir = -1;
+						animationStart = 4;//Set the starting frame to right animation start.
+					} else if(xDir == 0 && yDir == 1) {//If the yellow enemy is coming from down direction.
+						xDir = -1;//The yellow enemy will move leftward.
 						yDir = 0;
-						animationStart = 0;
+						animationStart = 0;//Set the starting frame to left animation start.
 					}
 				}
 			}
@@ -60,7 +64,7 @@ public class YellowEnemy extends Enemy {
 		}
 		// Player collision
 		if(x == Map.bombGuy.x && y == Map.bombGuy.y) {
-			Map.bombGuy.life--;
+			Map.bombGuy.life--;//If the bomb guy collides with the yellow enemy, bomb guy loses one life.
 			Map.reloadMap(parent, Map.configURL);
 		}
 	}
