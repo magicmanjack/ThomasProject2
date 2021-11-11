@@ -7,7 +7,7 @@ import processing.core.PImage;
  * The yellow enemy will always move to the clockwise
  * direction from the previous direction.
  * */
-public class YellowEnemy extends Enemy {
+public class YellowEnemy extends GameCharacter {
 	
 	/**Constructor.
 	 * Initializes all the main variables. The PApplet parent argument is used to load the
@@ -20,6 +20,7 @@ public class YellowEnemy extends Enemy {
 		yDir = 0;
 		animationStart = 0;
 		animationOffset = 0;
+		sprites = new PImage[16];
 		sprites[0] = parent.loadImage("src/main/resources/yellow_enemy/yellow_left1.png"); 
 		sprites[1] = parent.loadImage("src/main/resources/yellow_enemy/yellow_left2.png");
 		sprites[2] = parent.loadImage("src/main/resources/yellow_enemy/yellow_left3.png");

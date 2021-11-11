@@ -19,20 +19,20 @@ public class App extends PApplet {
     
     /**The state of a key being held*
      * If a key is held down, keyHeld is set to true.*/
-    public static boolean keyHeld;
+    private static boolean keyHeld;
     
     /**The UI font*
      * This is the font of the game over and winning screens.*/
-    public PFont gameFont;
+    private PFont gameFont;
     
     /**The UI image of the player*/
-    public PImage playerIcon;
+    private PImage playerIcon;
     /**The UI image of the clock*/
-    public PImage clockIcon;
+    private PImage clockIcon;
     /**Elapsed frames.
      * This is the elapsed frames since the game was started.
      */
-    public long deltaFrames;
+    private int deltaFrames;
 
     public void settings() {
         size(WIDTH, HEIGHT);

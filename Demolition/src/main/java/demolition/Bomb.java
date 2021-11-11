@@ -12,17 +12,17 @@ public class Bomb extends Entity {
 	/**Stores all instances of the bomb objects */
 	public static ArrayList<Bomb> bombs = new ArrayList<Bomb>();
 	/**Keeps track of how far the explosion animation travels. */
-	public int explosionStartX, explosionEndX, explosionStartY, explosionEndY;
+	private int explosionStartX, explosionEndX, explosionStartY, explosionEndY;
 	/**Contains the sprites of the first part of the animation.*/
-	public PImage[] sprites;
+	private PImage[] sprites;
 	/**Contains the sprites of the second explosion part of the animation.*/
-	public PImage[] explosionSprites;
+	private PImage[] explosionSprites;
 	/**The current animation texture.
 	 * This is the index of the current texture in the animation sequence*/
-	public int animationOffset;
+	private int animationOffset;
 	/**The elapsed frames since the game had started.*
 	 * This is used for animation purposes.*/
-	public int deltaFrames;
+	private int deltaFrames;
 	
 	/**The bomb constructor*
 	 * Creates a new bomb and initializes its main data fields. Takes in a PApplet parent argument for the purposes of
@@ -50,7 +50,7 @@ public class Bomb extends Entity {
 	}
 	
 	/** Calculates the animation offset*/
-	public void animate() {
+	private void animate() {
 		deltaFrames++;
 		if(deltaFrames % 15 == 0) {
 			// The animation frame changes every 0.25 seconds.
@@ -60,7 +60,7 @@ public class Bomb extends Entity {
 	
 	/**Swaps a char in the current map.
 	 * The char at position (x, y) in the current map is swapped with the char c.*/
-	public void swapMapChar(int x, int y, char c) {
+	private static void swapMapChar(int x, int y, char c) {
 		char[] rowChars = Map.maps[Map.currentLevel].mapStrings[y].toCharArray();
 		rowChars[x] = c;
 		Map.maps[Map.currentLevel].mapStrings[y] = String.valueOf(rowChars);
@@ -70,7 +70,7 @@ public class Bomb extends Entity {
 	 * If the explosion hits any enemies or the player, they are removed. If the bomb explosion
 	 * hits any walls, the case is dealt with accordingly. The method takes a collision argument because in some cases,
 	 * the map needs to be reloaded.*/
-	public void collide(PApplet parent) {
+	private void collide(PApplet parent) {
 		if(deltaFrames >= 120 && deltaFrames <= 150) { //If two seconds have passed and still within the time line of the explosion animation.
 			for(int i = -2; i <= 2; i++) { 
 				// For every possible horizontal position of the explosion decide where the explosion starts and ends. Collision with entities are dealt with.
@@ -95,7 +95,7 @@ public class Bomb extends Entity {
 				}
 				// Collision with enemies.
 				for(int j = 0; j < Map.enemies.size(); j++) {
-					Enemy e = Map.enemies.get(j);
+					GameCharacter e = Map.enemies.get(j);
 					if(x + i == e.x && y == e.y) {
 						Map.enemies.remove(j);
 					}
@@ -131,7 +131,7 @@ public class Bomb extends Entity {
 				}
 				// Collision with enemies.
 				for(int j = 0; j < Map.enemies.size(); j++) {
-					Enemy e = Map.enemies.get(j);
+					GameCharacter e = Map.enemies.get(j);
 					if(x == e.x && y + i == e.y) {
 						Map.enemies.remove(j);
 					}

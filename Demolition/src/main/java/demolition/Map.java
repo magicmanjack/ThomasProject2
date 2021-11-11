@@ -17,7 +17,7 @@ public class Map {
 	 * This is stored statically so it can be used later by any class to reload map files.*/
 	public static String configURL;
 	/** A list of enemy objects */
-	public static ArrayList<Enemy> enemies = new ArrayList<Enemy>();
+	public static ArrayList<GameCharacter> enemies = new ArrayList<GameCharacter>();
 	/** A dictionary that maps the special map characters to an image.*/
 	public static HashMap<Character, PImage> tiles;
 	/** The current level that the player is on.*/
@@ -32,7 +32,7 @@ public class Map {
 	public int time;
 	/** The spawn location of the player.
 	 * this may be different for each map.*/
-	public int spawnX, spawnY;
+	private int spawnX, spawnY;
 	
 	/**Constructor.
 	 * Sets the local mapStrings and time variables to the arguments. The enemies are added to the

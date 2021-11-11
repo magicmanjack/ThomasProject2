@@ -5,7 +5,7 @@ import processing.core.PImage;
 
 /** The enemy class.
  * Defines an enemy object which has a unique animation and collision detection.*/
-public class Enemy extends Entity {
+public class GameCharacter extends Entity {
 	
 	/** The y offset the sprite. 
 	 * This is the offset that the sprite is drawn relative to the position of the enemy.*/

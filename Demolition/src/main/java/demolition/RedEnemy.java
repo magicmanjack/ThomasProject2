@@ -9,7 +9,7 @@ import processing.core.PImage;
  * The red enemy will always move to a random
  * direction after colliding with the wall.
  * */
-public class RedEnemy extends Enemy {
+public class RedEnemy extends GameCharacter {
 	/**Constructor.
 	 * Initializes all the main variables. The PApplet parent argument is used to load the
 	 * Red Enemy's images. The spawnX and spawnY argument is used to set the starting

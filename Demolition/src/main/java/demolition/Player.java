@@ -6,7 +6,7 @@ import processing.core.*;
 /** The Player class.
  * The Player class extends the Enemy class 
  * because it is a slight variation on the Enemy class.*/
-public class Player extends Enemy {
+public class Player extends GameCharacter {
 	
 	/** The number of lives the player has left.*/
 	public int life;
