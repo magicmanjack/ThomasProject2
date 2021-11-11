@@ -111,6 +111,7 @@ public class App extends PApplet {
     	}
     }
     
+    /** Draws all the game elements.*/
     public void draw() {
     	update(); // The game is updated before drawn.
         background(239, 129, 0); // The background is set to the shade of orange.
