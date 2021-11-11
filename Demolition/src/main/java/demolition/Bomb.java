@@ -4,15 +4,29 @@ import java.util.ArrayList;
 
 import processing.core.*;
 
+/** The bomb class
+ * This class is the template for any bomb objects. It deals with the updates, rendering and
+ * animation of the bombs. */
 public class Bomb extends Entity {
 	
-	public static ArrayList<Bomb> bombs = new ArrayList<Bomb>();	
+	/**Stores all instances of the bomb objects */
+	public static ArrayList<Bomb> bombs = new ArrayList<Bomb>();
+	/**Keeps track of how far the explosion animation travels. */
 	public int explosionStartX, explosionEndX, explosionStartY, explosionEndY;
+	/**Contains the sprites of the first part of the animation.*/
 	public PImage[] sprites;
+	/**Contains the sprites of the second explosion part of the animation.*/
 	public PImage[] explosionSprites;
-	public int animationOffset, deltaFrames;
+	/**The current animation texture.
+	 * This is the index of the current texture in the animation sequence*/
+	public int animationOffset;
+	/**The elapsed frames since the game had started.*
+	 * This is used for animation purposes.*/
+	public int deltaFrames;
 	
-	
+	/**The bomb constructor*
+	 * Creates a new bomb and initializes its main data fields. Takes in a PApplet parent argument for the purposes of
+	 * loading the bombs animation textures. The spawnX and spawnY arguments are for where the bomb spawns.*/
 	public Bomb(PApplet parent, int spawnX, int spawnY) {
 		x = spawnX;
 		y = spawnY;
@@ -35,6 +49,7 @@ public class Bomb extends Entity {
 		explosionSprites[2] = parent.loadImage("src/main/resources/explosion/vertical.png");
 	}
 	
+	/** Calculates the animation offset*/
 	public void animate() {
 		deltaFrames++;
 		if(deltaFrames % 15 == 0) {
@@ -43,34 +58,35 @@ public class Bomb extends Entity {
 		}
 	}
 	
+	/**Swaps a char in the current map.
+	 * The char at position (x, y) in the current map is swapped with the char c.*/
 	public void swapMapChar(int x, int y, char c) {
 		char[] rowChars = Map.maps[Map.currentLevel].mapStrings[y].toCharArray();
 		rowChars[x] = c;
 		Map.maps[Map.currentLevel].mapStrings[y] = String.valueOf(rowChars);
 	}
 	
+	/** Deals with the collision with the bomb and other entities.
+	 * If the explosion hits any enemies or the player, they are removed. If the bomb explosion
+	 * hits any walls, the case is dealt with accordingly. The method takes a collision argument because in some cases,
+	 * the map needs to be reloaded.*/
 	public void collide(PApplet parent) {
-		
-		if(deltaFrames >= 120 && deltaFrames <= 150) {
-			for(int i = -2; i <= 2; i++) {
-				//Horizontal collision
-				if(deltaFrames == 120) {
+		if(deltaFrames >= 120 && deltaFrames <= 150) { //If two seconds have passed and still within the time line of the explosion animation.
+			for(int i = -2; i <= 2; i++) { 
+				//For every possible horizontal position of the explosion decide where the explosion starts and ends. Collision with entities are dealt with.
+				if(deltaFrames == 120) { // Ensures the explosion collision only happens once at the start of the explosion.
 					if(i < 0 && x + i >= 0) {
-						if(Map.maps[Map.currentLevel].mapStrings[y].charAt(x + i) == 'W') {
-							//If a solid wall.
+						if(Map.maps[Map.currentLevel].mapStrings[y].charAt(x + i) == 'W') { //If a solid wall.
 							explosionStartX = i + 1;
-						} else if(Map.maps[Map.currentLevel].mapStrings[y].charAt(x + i) == 'B') {
-							//If a broken wall.
+						} else if(Map.maps[Map.currentLevel].mapStrings[y].charAt(x + i) == 'B') { //If a broken wall.
 							explosionStartX = i;
 							swapMapChar(x + i, y, ' ');
 						}
 					} else if(i > 0 && x + i < Map.maps[Map.currentLevel].mapStrings[0].length()) {
-						if(Map.maps[Map.currentLevel].mapStrings[y].charAt(x + i) == 'W') {
-							//If a solid wall.
+						if(Map.maps[Map.currentLevel].mapStrings[y].charAt(x + i) == 'W') { //If a solid wall.
 							explosionEndX = i - 1;
 							break;
-						} else if(Map.maps[Map.currentLevel].mapStrings[y].charAt(x + i) == 'B') {
-							//If a broken wall.
+						} else if(Map.maps[Map.currentLevel].mapStrings[y].charAt(x + i) == 'B') { //If a broken wall.
 							explosionEndX = i;
 							swapMapChar(x + i, y, ' ');
 							break;
@@ -93,24 +109,20 @@ public class Bomb extends Entity {
 			}
 			
 			for(int i = -2; i <= 2; i++) {
-				//Vertical collision
+				//For every possible vertical position in the explosion, collision with entities are dealt with.
 				if(deltaFrames == 120) {
 					if(i < 0 && y + i >= 0) {
-						if(Map.maps[Map.currentLevel].mapStrings[y + i].charAt(x) == 'W') {
-							//If a solid wall.
+						if(Map.maps[Map.currentLevel].mapStrings[y + i].charAt(x) == 'W') { //If a solid wall.
 							explosionStartY = i + 1;
-						} else if(Map.maps[Map.currentLevel].mapStrings[y + i].charAt(x) == 'B') {
-							//If a broken wall.
+						} else if(Map.maps[Map.currentLevel].mapStrings[y + i].charAt(x) == 'B') { //If a broken wall.
 							explosionStartY = i;
 							swapMapChar(x, y + i, ' ');
 						}
 					} else if(i > 0 && y + i < Map.maps[Map.currentLevel].mapStrings.length) {
-						if(Map.maps[Map.currentLevel].mapStrings[y + i].charAt(x) == 'W') {
-							//If a solid wall.
+						if(Map.maps[Map.currentLevel].mapStrings[y + i].charAt(x) == 'W') { //If a solid wall.
 							explosionEndY = i - 1;
 							break;
-						}else if(Map.maps[Map.currentLevel].mapStrings[y + i].charAt(x) == 'B') {
-							//If a broken wall.
+						}else if(Map.maps[Map.currentLevel].mapStrings[y + i].charAt(x) == 'B') { //If a broken wall.
 							explosionEndY = i;
 							swapMapChar(x, y + i, ' ');
 							break;
@@ -134,26 +146,28 @@ public class Bomb extends Entity {
 		}
 	}
 	
+	/**Updates the bomb.*/
 	@Override
 	public void update(PApplet parent) {
 		animate();
 		collide(parent);
 	}
 	
+	/**Draws the bomb.*/
 	@Override
 	public void draw(PApplet parent) {
-		if(animationOffset < 8) {
+		if(animationOffset < 8) { //If the animation is in the first stage.
 			parent.image(sprites[animationOffset], x * Map.TILE_WIDTH, y * Map.TILE_WIDTH + Map.Y_OFFSET);
-		} else if(deltaFrames < 150) {
+		} else if(deltaFrames < 150) { //If the animation is in the explosion stage.
 			//Centre sprite.
 			parent.image(explosionSprites[0], x * Map.TILE_WIDTH, y * Map.TILE_WIDTH + Map.Y_OFFSET);
-			//row
+			//Drawing of the explosion row
 			for(int i = explosionStartX; i <= explosionEndX; i++) {
 				if(i != 0) {
 					parent.image(explosionSprites[1], (x + i) * Map.TILE_WIDTH, y * Map.TILE_WIDTH + Map.Y_OFFSET);
 				}
 			}
-			//column
+			//Drawing of the explosion column
 			for(int i = explosionStartY; i <= explosionEndY; i++) {
 				if(i != 0) {
 					parent.image(explosionSprites[2], x * Map.TILE_WIDTH, (y + i) * Map.TILE_WIDTH + Map.Y_OFFSET);
