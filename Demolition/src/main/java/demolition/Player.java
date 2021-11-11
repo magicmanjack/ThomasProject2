@@ -38,7 +38,7 @@ public class Player extends Enemy {
 	@Override
 	public void update(PApplet parent) {
 		animate();
-		if(collides()) {
+		if(collides()) {//
 			xDir = 0;
 			yDir = 0;
 		}

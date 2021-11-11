@@ -5,8 +5,9 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="fd7d1836-f1f6-458c-9965-a8bfe57fcbb9" name="Changes" comment="">
-      <change beforePath="$PROJECT_DIR$/.idea/misc.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/demolition/Player.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/demolition/Player.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/demolition/RedEnemy.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/demolition/RedEnemy.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/demolition/YellowEnemy.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/demolition/YellowEnemy.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
@@ -65,7 +66,7 @@
       <workItem from="1635413986829" duration="9000" />
       <workItem from="1635414068705" duration="41000" />
       <workItem from="1635414137439" duration="797000" />
-      <workItem from="1636541909686" duration="4492000" />
+      <workItem from="1636541909686" duration="5755000" />
     </task>
     <servers />
   </component>

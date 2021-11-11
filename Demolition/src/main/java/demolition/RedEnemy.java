@@ -4,9 +4,16 @@ import java.util.Random;
 
 import processing.core.PApplet;
 import processing.core.PImage;
-
+/**The red enemy class.
+ * Implements red enemy AI.
+ * The red enemy will always move to a random
+ * direction after colliding with the wall.
+ * */
 public class RedEnemy extends Enemy {
-	
+	/**Constructor.
+	 * Initializes all the main variables. The PApplet parent argument is used to load the
+	 * Red Enemy's images. The spawnX and spawnY argument is used to set the starting
+	 * x and y position.*/
 	public RedEnemy(PApplet parent, int spawnX, int spawnY) {
 		x = spawnX;
 		y = spawnY;
@@ -36,13 +43,14 @@ public class RedEnemy extends Enemy {
 	@Override
 	public void update(PApplet parent) {
 		animate();
-		if(deltaFrames % 60 == 0) {
-			if(collides()) {
+		if(deltaFrames % 60 == 0) { // True every second.
+			if(collides()) { // If the red enemy collides with a wall.
 				String freeSpaces = "";
 				//Check up
 				xDir = 0;
 				yDir = -1;
 				if(!collides()) {
+					// Adds up to possible free spaces.
 					freeSpaces = freeSpaces + "u";
 				}
 				
@@ -50,6 +58,7 @@ public class RedEnemy extends Enemy {
 				xDir = 0;
 				yDir = 1;
 				if(!collides()) {
+					// Adds down to possible free spaces.
 					freeSpaces = freeSpaces + "d";
 				}
 				
@@ -57,6 +66,7 @@ public class RedEnemy extends Enemy {
 				xDir = -1;
 				yDir = 0;
 				if(!collides()) {
+					// Adds left to possible free spaces.
 					freeSpaces = freeSpaces + "l";
 				}
 				
@@ -64,40 +74,46 @@ public class RedEnemy extends Enemy {
 				xDir = 1;
 				yDir = 0;
 				if(!collides()) {
+					// Adds right to possible free spaces.
 					freeSpaces = freeSpaces + "r";
 				}
 				
 				Random rand = new Random();
-				switch((char)freeSpaces.charAt(rand.nextInt(freeSpaces.length()))) {
+				switch((char)freeSpaces.charAt(rand.nextInt(freeSpaces.length()))) { // Chooses a random direction from the possible free spaces string.
 					case 'u':
+						// Sets the direction to up.
 						xDir = 0;
 						yDir = -1;
-						animationStart = 8;
+						animationStart = 8;// Sets the starting frame to up.
 						break;
 					case 'd':
+						// Sets the direction to down.
 						xDir = 0;
 						yDir = 1;
-						animationStart = 12;
+						animationStart = 12;// Sets the starting frame to down.
 						break;
 					case 'l':
+						// Sets the direction to left.
 						xDir = -1;
 						yDir = 0;
-						animationStart = 0;
+						animationStart = 0;// Sets the starting frame to left.
 						break;
 					case 'r':
+						// Sets the direction to right.
 						xDir = 1;
 						yDir = 0;
-						animationStart = 4;
+						animationStart = 4;// Sets the starting frame to right.
 						break;
 				}
 			}
+			// The x and y position is moved in the decided direction.
 			x += xDir;
 			y += yDir;
 		}
 		// Player collision
 		if(x == Map.bombGuy.x && y == Map.bombGuy.y) {
-			Map.bombGuy.life--;
-			Map.reloadMap(parent, Map.configURL);
+			Map.bombGuy.life--;// If the bomb guy collides with the red enemy, bomb guy loses one life.
+			Map.reloadMap(parent, Map.configURL);// The map is reloaded so that all walls and enemies are reset.
 		}
 	}
 }

@@ -73,7 +73,7 @@ public class YellowEnemy extends Enemy {
 		}
 		// Player collision
 		if(x == Map.bombGuy.x && y == Map.bombGuy.y) {
-			Map.bombGuy.life--;//If the bomb guy collides with the yellow enemy, bomb guy loses one life.
+			Map.bombGuy.life--;// If the bomb guy collides with the yellow enemy, bomb guy loses one life.
 			Map.reloadMap(parent, Map.configURL); // The map is reloaded so that all walls and enemies are reset.
 		}
 	}
