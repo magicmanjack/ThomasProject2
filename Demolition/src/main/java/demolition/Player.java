@@ -2,11 +2,20 @@ package demolition;
 
 import processing.core.*;
 
+
+/** The Player class.
+ * The Player class extends the Enemy class 
+ * because it is a slight variation on the Enemy class.*/
 public class Player extends Enemy {
 	
+	/** The number of lives the player has left.*/
 	public int life;
+	/** Is true if the dies.*/
 	public boolean dead;
 	
+	/**Constructor.
+	 * Initializes the main variables of the player. The PApplet parent is used for loading
+	 * the player images. The spawnX and spawnY is used to set the players starting position.*/
 	public Player(PApplet parent, int spawnX, int spawnY) {
 		life = 3;
 		x = spawnX;
@@ -37,19 +46,21 @@ public class Player extends Enemy {
 	
 	@Override
 	public void update(PApplet parent) {
-		animate();
-		if(collides()) {//
+		animate(); //Updates the animation variables.
+		if(collides()) {//If the player collides in the current direction.
+			//The direction is set to no direction to stop the player from moving.
 			xDir = 0;
 			yDir = 0;
 		}
+		//The players position is updated.
 		x += xDir;
 		y += yDir;
+		//The direction is set to no direction to prevent the player continually moving.
 		xDir = 0;
 		yDir = 0;
-		if(Map.maps[Map.currentLevel].mapStrings[y].charAt(x) == 'G') {
-			// Touching the goal.
-			Map.currentLevel++;
-			Map.reloadMap(parent, Map.configURL);
+		if(Map.maps[Map.currentLevel].mapStrings[y].charAt(x) == 'G') { // If touching the goal.
+			Map.currentLevel++; // The current level is incremented to the next level.
+			Map.reloadMap(parent, Map.configURL); // The map is reloaded which reloads the enemies.
 		}
 	}
 

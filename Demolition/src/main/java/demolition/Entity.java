@@ -2,11 +2,11 @@ package demolition;
 
 import processing.core.*;
 /**The base class of all entities.
- * Two enemies and the player class will extend from this class.
- * Contains the basic parameters like x and y position.
- * An abstract update method and an abstract draw method.
+ * Contains the basic parameters like the x and y position.
+ * A template of an update and draw method is provided.
  * */
 public abstract class Entity {
+	/** The position of the entity.*/
 	public int x, y;
 	
 	public abstract void update(PApplet parent);
